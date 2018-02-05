@@ -40,6 +40,13 @@ function movieThis() {
     var movieName = "";
     // OMDB API
     var movieAPI = "7fc81b28";
+
+    if (movieName === "") {
+        movieName = "Mr. Nobody";
+        console.log("If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/");
+        console.log("It's on Netflix!");
+    }
+
     // Loop through all the words in the node argument
     for (var i = 3; i < nodeArgs.length; i++) {
 
@@ -95,12 +102,16 @@ function spotifyThisSong() {
 
     var songName = "";
 
+    if (songName === "") {
+        songName = "The sign Ace of Base";
+    }
+
     for (i = 3; i < nodeArgs.length; i++) {
         songName = songName + " " + nodeArgs[i];
     }
 
-    spotify.search({ type: 'track', query: songName }, function (err, data) {
-        if (!err) {
+    spotify.search({ type: 'track', query: songName, limit: 1 }, function (error, data) {
+        if (!error) {
             for (var i = 0; i < data.tracks.items.length; i++) {
                 var songData = data.tracks.items[i];
                 //artist
@@ -115,7 +126,7 @@ function spotifyThisSong() {
             }
         }
         else {
-            console.log('Error occurred.');
+            console.log("Error occurred" + error);
         }
     });
 }
@@ -136,20 +147,21 @@ function myTweets() {
             }
         }
         else {
-            console.log('Error occurred');
-        }
-    });
-}
-
-function doWhatItSays() {
-
-    fs.readFile("random.txt", "utf8", function (error, data) {
-        if (!error) {
-            doWhatItSaysResults = data.split(",");
-            console.log(doWhatItSaysResults);
-
-        } else {
             console.log("Error occurred" + error);
         }
     });
 }
+
+// function doWhatItSays() {
+
+//     fs.readFile("random.txt", "utf8", function (error, data) {
+//         if (!error) {
+//             var txt = data.split(",");
+
+//             spotifyThisSong(txt[1]);
+
+//         } else {
+//             console.log("Error occurred" + error);
+//         }
+//     });
+// }
