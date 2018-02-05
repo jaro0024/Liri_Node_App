@@ -1,5 +1,5 @@
 
-// 
+// To include and configure dotenv file
 require("dotenv").config();
 
 // Global Variables
@@ -18,11 +18,52 @@ var liriBotAction = process.argv[2];
 // Switch-case statement to direct which function to run
 switch (liriBotAction) {
     case "movie-this":
-        movieThis();
+        // Creates an empty variable for holding the movie name
+        var movieName = "";
+        // Loops through all the words in the node argument
+        for (var i = 3; i < nodeArgs.length; i++) {
+            if (i > 3 && i < nodeArgs.length) {
+                movieName = movieName + "+" + nodeArgs[i];
+            } else {
+                movieName += nodeArgs[i];
+            }
+        }
+        // If user doesn't enter movie name, it defaults to Mr. Nobody
+        if (movieName === "") {
+            movieName = "Mr. Nobody";
+            // Then the function is called to run the API
+            movieThis();
+            // Logs messages
+            console.log("If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/");
+            console.log("It's on Netflix!");
+        }
+        // Otherwise function is called
+        else {
+            movieThis();
+        }
         break;
 
     case "spotify-this-song":
-        spotifyThisSong();
+        // Creates an empty variable for holding the song name
+        var songName = "";
+        // For loop to capture all the words entered by user
+        for (var i = 3; i < nodeArgs.length; i++) {
+            if (i > 3 && i < nodeArgs.length) {
+                songName = songName + "+" + nodeArgs[i];
+            } else {
+                songName += nodeArgs[i];
+            }
+        }
+        // If user doesn't enter song name, it defaults to The Sign by Ace of Base
+        if (songName === "") {
+            songName = "The sign Ace of Base";
+            // Then the function is called to run the API
+            spotifyThisSong();
+        }
+        // Otherwise function is called
+        else {
+            spotifyThisSong();
+        }
         break;
 
     case "my-tweets":
@@ -36,28 +77,9 @@ switch (liriBotAction) {
 
 // If movieThis function is called...
 function movieThis() {
-    // Creates an empty variable for holding the movie name
-    var movieName = "";
+
     // Variable to store OMDB API key
     var movieAPI = "7fc81b28";
-
-    // if (movieName === "") {
-    //     movieName = "Mr. Nobody";
-    //     console.log("If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/");
-    //     console.log("It's on Netflix!");
-    // }
-
-    // Loops through all the words in the node argument
-    for (var i = 3; i < nodeArgs.length; i++) {
-
-        if (i > 3 && i < nodeArgs.length) {
-            movieName = movieName + "+" + nodeArgs[i];
-
-        } else {
-            movieName += nodeArgs[i];
-        }
-    }
-
     // Variable to store the API URl and key 
     var movieQueryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=" + movieAPI;
     // Then run a request to the OMDB API with the movie specified
@@ -98,17 +120,6 @@ function spotifyThisSong() {
     // To include the spotify-api
     var Spotify = require('node-spotify-api');
     var spotify = new Spotify(liriKeys.spotify);
-    // Creates an empty variable for holding the song name
-    var songName = "";
-
-    // if (songName === "") {
-    //     songName = "The sign Ace of Base";
-    // }
-
-    // For loop to capture all the words entered by user
-    for (i = 3; i < nodeArgs.length; i++) {
-        songName = songName + " " + nodeArgs[i];
-    }
     // To search for the song name entered by user
     spotify.search({ type: 'track', query: songName, limit: 1 }, function (error, data) {
         if (!error) {
