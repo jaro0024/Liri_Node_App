@@ -3,12 +3,16 @@
 require("dotenv").config();
 
 // Global Variables
+
 // To include the file keys.js which inlcudes the tokens and API keys
 var liriKeys = require("./keys.js");
+
 // Includes the request npm package
 var request = require("request");
+
 // Stores all of the arguments in an array
 var nodeArgs = process.argv;
+
 // Loads the fs package to read and write
 var fs = require("fs");
 
@@ -20,6 +24,7 @@ switch (liriBotAction) {
     case "movie-this":
         // Creates an empty variable for holding the movie name
         var movieName = "";
+        
         // Loops through all the words in the node argument
         for (var i = 3; i < nodeArgs.length; i++) {
             if (i > 3 && i < nodeArgs.length) {
@@ -46,6 +51,7 @@ switch (liriBotAction) {
     case "spotify-this-song":
         // Creates an empty variable for holding the song name
         var songName = "";
+
         // For loop to capture all the words entered by user
         for (var i = 3; i < nodeArgs.length; i++) {
             if (i > 3 && i < nodeArgs.length) {
@@ -77,11 +83,11 @@ switch (liriBotAction) {
 
 // If movieThis function is called...
 function movieThis() {
-
     // Variable to store OMDB API key
     var movieAPI = "7fc81b28";
     // Variable to store the API URl and key 
     var movieQueryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=" + movieAPI;
+
     // Then run a request to the OMDB API with the movie specified
     request(movieQueryUrl, function (error, response, body) {
         // If the request is successful
@@ -120,6 +126,7 @@ function spotifyThisSong() {
     // To include the spotify-api
     var Spotify = require('node-spotify-api');
     var spotify = new Spotify(liriKeys.spotify);
+
     // To search for the song name entered by user
     spotify.search({ type: 'track', query: songName, limit: 1 }, function (error, data) {
         if (!error) {
@@ -149,6 +156,7 @@ function myTweets() {
     // Parameters to pull info from Twitter API
     var params = { screen_name: 'DaniJaros24' };
     // Pulling info from Twitter
+
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
         if (!error) {
             // For loop to get each tweet and the date it was created
@@ -167,16 +175,16 @@ function myTweets() {
 }
 
 // If the doWhatItSays function is called...
-// function doWhatItSays() {
+function doWhatItSays() {
 
-//     fs.readFile("random.txt", "utf8", function (error, data) {
-//         if (!error) {
-//             var txt = data.split(",");
-
-//             spotifyThisSong(txt[1]);
-
-//         } else {
-//             console.log("Error occurred" + error);
-//         }
-//     });
-// }
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if (!error) {
+            var txt = data.split(",");
+            songName = txt[1];
+            spotifyThisSong();
+            
+        } else {
+            console.log("Error occurred" + error);
+        }
+    });
+}
