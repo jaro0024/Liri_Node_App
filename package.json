@@ -1,7 +1,7 @@
 {
   "name": "Liri_Node_App",
   "version": "1.0.0",
-  "description": "",
+  "description": "LIRI is a Language Interpretation and Recognition Interface command line node app that takes in parameters and gives you back data.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,5 +22,6 @@
     "node-spotify-api": "^1.0.7",
     "request": "^2.83.0",
     "twitter": "^1.7.1"
-  }
+  },
+  "devDependencies": {}
 }
